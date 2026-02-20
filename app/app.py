@@ -28,6 +28,13 @@ def ping():
 SECRET_KEY = "minha-senha-super-secreta-123"
 DB_PASSWORD = "admin123"
 
+# ❌ VULNERABILIDADE 4: Path Traversal
+@app.route('/file')
+def read_file():
+    filename = request.args.get('name')
+    with open(f"/var/data/{filename}", 'r') as f:
+        return f.read()
+
 # ✅ CORRETO: SQL com parâmetros
 @app.route('/user/safe')
 def get_user_safe():
