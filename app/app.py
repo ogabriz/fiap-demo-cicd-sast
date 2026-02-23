@@ -11,9 +11,9 @@ app = Flask(__name__)
 def get_user():
     user_id = request.args.get('id')
     conn = sqlite3.connect('users.db')
-    # INSECURE: concatenação direta de input do usuário
-    query = "SELECT * FROM users WHERE id = " + user_id
-    result = conn.execute(query).fetchall()
+    # CORREÇÃO: Uso de parâmetros para evitar SQL Injection
+    query = "SELECT * FROM users WHERE id = ?"
+    result = conn.execute(query, (user_id,)).fetchall()
     return str(result)
 
 # ❌ VULNERABILIDADE 2: Command Injection
